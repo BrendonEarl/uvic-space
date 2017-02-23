@@ -3,13 +3,12 @@ var max = 50
 var i = 0;
 
 $(document).ready(function() {
-    
+    // get a list of cat gifs (xml)
     $.get("http://thecatapi.com/api/images/get?format=xml&type=gif&results_per_page="+max,
         function(doc) {
+            // parse into list of urls only for img src
             var urlList = doc.getElementsByTagName("url");
-            console.log(urlList);
             for(var j = 0; j < max; j++) {
-                console.log(urlList[j].textContent)
                 gifList.push(urlList[j].textContent)
             }
         }
@@ -17,9 +16,24 @@ $(document).ready(function() {
 });
 
 $(document).on('click tap', function(e){
-    //TODO Separate styles into new jQuery operation
-    var gifSrc = gifList[i]
+    // increment unless at max
     if (i < max-1) i++
     else i = 0
-    $(".cats").append("<img style='position:absolute; left:"+(e.pageX)+"; top:"+(e.pageY)+";' src='"+gifList[i]+"'>");
+    // create jQuery element
+    var cat = $("<img src='"+gifList[i]+"'>");
+    cat.css({
+        position: "absolute",
+        visibility: "hidden"
+    })
+    // add cat to DOM
+    $(".cats").append(cat)
+    // hopefully cat will be in DOM by timeout
+    setTimeout(function() {
+        // position under cursor and show
+        cat.css({
+            visibility: "visible",
+            left: (e.pageX-cat.width()/2),
+            top: (e.pageY-cat.height()/2)
+        })
+    }, 150)
 });
