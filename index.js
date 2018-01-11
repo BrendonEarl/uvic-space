@@ -1,5 +1,5 @@
 var gifList = [];
-var max = 50
+var max = 100
 var i = 0;
 
 $(document).ready(function() {
