@@ -19,6 +19,8 @@ $(document).ready(function() {
 });
 
 $(document).on("click tap", function(e) {
+  // avoid double fire
+  e.stopImmediatePropagation();
   // increment unless at max
   if (i < max - 1) i++;
   else i = 0;
